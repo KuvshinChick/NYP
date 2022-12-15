@@ -1,0 +1,68 @@
+Turbo Assembler	 Version 2.51	     12/06/22 15:29:58	    Page 1
+L_5_E_6.asm
+
+
+
+      1	0000			     .model small					     ;Модель памяти,	    +
+      2				     используемая для EXE.
+      3	0000			     .stack 100h						     ;Сегмент стека	    +
+      4				     размеров в 256 байт
+      5	0000			     .code							     ;Начало сегмента +
+      6				     кода.
+      7	0000  B8 0000s		     start:  mov ax,@data			     ; в регистра AX смещение	    +
+      8				     для данных
+      9	0003  8E D8				 mov ds,ax				     ; установить регистр  +
+     10				     DS	равный AX	то ест теперь там	смещение.
+     11
+     12	0005  B4 3D				     mov ah,3Dh					     ;Номер функции	DOS +
+     13				     - в АН.	(открытие)
+     14	0007  B0 02				     mov al, 2					     ;режим доступа
+     15	0009  BA 0000r				     mov dx,offset filename	     ;Указатель на имя файла
+     16	000C  CD 21			     int 21h					     ;Вызов обработчика	    +
+     17				     прерывания
+     18	000E  A1 0006r				     mov ax, handle
+     19
+     20	0011  B4 3E				     mov   ah,3Eh			     ;Close File
+     21	0013  8B 1E 0006r			     mov   bx,handle
+     22	0017  CD 21				     int   21h
+     23
+     24	0019  B8 4C00				 mov ax,4C00h
+     25	001C  CD 21			     int 21h					     ; Функция DOS		    +
+     26				     "завершить программу".
+     27	001E			     .data
+     28	0000  37 2E 74 78 74 00	     filename db '7.txt',0			     ; Имя файла
+     29	0006  0000		     handle dw 0					     ; под дескриптор	    +
+     30				     (идентификатор)
+     31				     end start							     ;Конец программы.
+Turbo Assembler	 Version 2.51	     12/06/22 15:29:58	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "12/06/22"
+??FILENAME		Text   "L_5_E_6	"
+??TIME			Text   "15:29:58"
+??VERSION		Number 0205
+@CODE			Text   _TEXT			   #1  #1  #5
+@CODESIZE		Text   0			   #1
+@CPU			Text   0101H
+@CURSEG			Text   _DATA			   #5  #27
+@DATA			Text   DGROUP			   #1  7
+@DATASIZE		Text   0			   #1
+@FILENAME		Text   L_5_E_6
+@MODEL			Text   2			   #1
+@WORDSIZE		Text   2			   #5  #27
+FILENAME		Byte   DGROUP:0000		   15  #28
+HANDLE			Word   DGROUP:0006		   18  21  #29
+START			Near   _TEXT:0000		   #7  31
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+DGROUP			Group				   #1  1  7
+  STACK			16  0100 Para	Stack	STACK	   #3
+  _DATA			16  0008 Word	Public	DATA	   #1  #27
+_TEXT			16  001E Word	Public	CODE	   #1  1  #5  5
+

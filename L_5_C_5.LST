@@ -1,0 +1,66 @@
+Turbo Assembler	 Version 2.51	     12/06/22 12:38:54	    Page 1
+L_5_C_5.asm
+
+
+
+      1	0000			     .model tiny					     ;Модель памяти,	    +
+      2				     используемая для СОМ.
+      3	0000			     .code							     ;Начало сегмента +
+      4				     кода.
+      5				     org 100h							     ;Начальное	    +
+      6				     значение счетчика - 100h.
+      7	0100			     start:
+      8	0100  B4 3D				     mov ah,3Dh					     ;Номер функции	DOS +
+      9				     - в АН.	(открытие)
+     10	0102  B0 02				     mov al, 2					     ;режим доступа
+     11	0104  BA 011Br				     mov dx,offset filename	     ;Указатель на имя файла
+     12	0107  CD 21			     int 21h					     ;Вызов обработчика	    +
+     13				     прерывания
+     14	0109  A3 0125r				     mov handle, AX
+     15
+     16	010C  B4 40				     mov AH, 40h			     ; функция записи в	    +
+     17				     файл
+     18	010E  8B 1E 0125r			     mov BX, handle			     ; идентификатор
+     19	0112  B9 0003				     mov CX, 3					 ; запись	3х байт
+     20	0115  BA 0121r				     lea DX, buffer		     ; из buffer
+     21	0118  CD 21				     int 21h
+     22
+     23	011A  C3			     ret					     ;Завершение		    +
+     24				     СОМ-программы.
+     25	011B  37 2E 74 78 74 00	     filename db '7.txt',0			     ;Имя файла
+     26	0121  31 32 33 00	     buffer   db '123',	0			     ; Буфер .
+     27	0125  0000		     handle dw 0					     ; под дескриптор	    +
+     28				     (идентификатор)
+     29				     end start							     ;Конец программы.
+Turbo Assembler	 Version 2.51	     12/06/22 12:38:54	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "12/06/22"
+??FILENAME		Text   "L_5_C_5	"
+??TIME			Text   "12:38:54"
+??VERSION		Number 0205
+@CODE			Text   DGROUP			   #1
+@CODESIZE		Text   0			   #1
+@CPU			Text   0101H
+@CURSEG			Text   _TEXT			   #3
+@DATA			Text   DGROUP			   #1
+@DATASIZE		Text   0			   #1
+@FILENAME		Text   L_5_C_5
+@MODEL			Text   1			   #1
+@WORDSIZE		Text   2			   #3
+BUFFER			Byte   DGROUP:0121		   20  #26
+FILENAME		Byte   DGROUP:011B		   11  #25
+HANDLE			Word   DGROUP:0125		   14  18  #27
+START			Near   DGROUP:0100		   #7  29
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+DGROUP			Group				   #1  1
+  _DATA			16  0000 Word	Public	DATA	   #1
+  _TEXT			16  0127 Word	Public	CODE	   #1  #3
+

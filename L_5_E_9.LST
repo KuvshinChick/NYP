@@ -1,0 +1,58 @@
+Turbo Assembler	 Version 2.51	     12/06/22 17:02:45	    Page 1
+L_5_E_9.asm
+
+
+
+      1	0000			     .model small					     ;Модель памяти,	    +
+      2				     используемая для EXE.
+      3	0000			     .stack 100h						     ;Сегмент стека	    +
+      4				     размеров в 256 байт
+      5	0000			     .code							     ;Начало сегмента +
+      6				     кода.
+      7	0000  B8 0000s		     start:  mov ax,@data			     ; в регистра AX смещение	    +
+      8				     для данных
+      9	0003  8E D8				 mov ds,ax				     ; установить регистр  +
+     10				     DS	равный AX	то ест теперь там	смещение.
+     11
+     12	0005  B4 3A				     mov ah,3Ah					     ;Номер функции	DOS +
+     13				     - в АН.	(открытие)
+     14	0007  BA 0000r				     mov dx,offset path			     ;Указатель на путь
+     15	000A  CD 21				     int 21h
+     16
+     17	000C  B8 4C00				 mov ax,4C00h
+     18	000F  CD 21			     int 21h					     ; Функция DOS		    +
+     19				     "завершить программу".
+     20	0011			     .data
+     21	0000  5C 6E 65 77 00	     path db '\new', 0	     ;Путь к директории
+     22				     end start							     ;Конец программы.
+Turbo Assembler	 Version 2.51	     12/06/22 17:02:45	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "12/06/22"
+??FILENAME		Text   "L_5_E_9	"
+??TIME			Text   "17:02:45"
+??VERSION		Number 0205
+@CODE			Text   _TEXT			   #1  #1  #5
+@CODESIZE		Text   0			   #1
+@CPU			Text   0101H
+@CURSEG			Text   _DATA			   #5  #20
+@DATA			Text   DGROUP			   #1  7
+@DATASIZE		Text   0			   #1
+@FILENAME		Text   L_5_E_9
+@MODEL			Text   2			   #1
+@WORDSIZE		Text   2			   #5  #20
+PATH			Byte   DGROUP:0000		   14  #21
+START			Near   _TEXT:0000		   #7  22
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+DGROUP			Group				   #1  1  7
+  STACK			16  0100 Para	Stack	STACK	   #3
+  _DATA			16  0005 Word	Public	DATA	   #1  #20
+_TEXT			16  0011 Word	Public	CODE	   #1  1  #5  5
+

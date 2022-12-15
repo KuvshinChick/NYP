@@ -1,0 +1,81 @@
+Turbo Assembler	 Version 2.51	     12/06/22 12:09:40	    Page 1
+L_5_E_4.asm
+
+
+
+      1	0000			     .model small				     ;Модель памяти,		    +
+      2				     используемая для EXE.
+      3	0000			     .stack 100h					     ;Сегмент стека		    +
+      4				     размеров в 256 байт
+      5	0000			     .code						     ;Начало сегмента кода.
+      6	0000  B8 0000s		     start:  mov ax,@data		     ; в регистра AX смещение для	    +
+      7				     данных
+      8	0003  8E D8				 mov ds,ax			     ; установить регистр DS	    +
+      9				     равный AX то ест теперь там смещение.
+     10	0005  B4 3D				     mov ah,3Dh					     ;Номер функции	DOS +
+     11				     - в АН.	(открытие)
+     12	0007  B0 00				     mov al, 0					     ;число байтов
+     13	0009  BA 0000r				     mov dx,offset filename	     ;Указатель на имя файла
+     14	000C  CD 21			     int 21h					     ;Вызов обработчика	    +
+     15				     прерывания
+     16	000E  A3 0006r				     mov handle, AX
+     17
+     18	0011  B4 3F				     mov AH, 3Fh			     ; функция чтения из	    +
+     19				     файла
+     20	0013  8B 1E 0006r			     mov BX, handle			     ; идентификатор
+     21	0017  B9 0002				     mov CX, 2					     ; чтение 2х	байт
+     22	001A  BA 0006r				     mov DX, offset buffer	     ; прочитанное в buffer
+     23	001D  CD 21				     int 21h
+     24
+     25	001F  BF 0006r				     mov DI, offset buffer	     ; адрес буфера с		    +
+     26				     прочитанными данными
+     27	0022  BB 0002				     mov BX, 2					     ; BX = количеству    +
+     28				     символов в строке
+     29	0025  C6 01 24				     mov byte ptr [DI+BX], '$'	 ; добавляем $	в конец строки
+     30
+     31	0028  B4 09				     mov AH, 9					     ; выводим строку, +
+     32				     считанную	из файла
+     33	002A  BA 0006r				     mov DX, offset buffer
+     34	002D  CD 21				     int 21h
+     35	002F  B8 4C00				 mov ax,4C00h
+     36	0032  CD 21			     int 21h					     ;Функция DOS "завершить+
+     37				     программу".
+     38	0034			     .data
+     39	0000  36 2E 74 78 74 00	     filename db '6.txt',0			     ;Имя файла
+     40	0006			     buffer   label byte				     ; Буфер за концом	    +
+     41				     программы.
+     42	0006  0000		     handle dw 0					     ; под дескриптор()
+     43				     end start							     ;Конец программы.
+Turbo Assembler	 Version 2.51	     12/06/22 12:09:40	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "12/06/22"
+??FILENAME		Text   "L_5_E_4	"
+??TIME			Text   "12:09:40"
+??VERSION		Number 0205
+@CODE			Text   _TEXT			   #1  #1  #5
+@CODESIZE		Text   0			   #1
+@CPU			Text   0101H
+@CURSEG			Text   _DATA			   #5  #38
+@DATA			Text   DGROUP			   #1  6
+@DATASIZE		Text   0			   #1
+@FILENAME		Text   L_5_E_4
+@MODEL			Text   2			   #1
+@WORDSIZE		Text   2			   #5  #38
+BUFFER			Byte   DGROUP:0006		   22  25  33  #40
+FILENAME		Byte   DGROUP:0000		   13  #39
+HANDLE			Word   DGROUP:0006		   16  20  #42
+START			Near   _TEXT:0000		   #6  43
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+DGROUP			Group				   #1  1  6
+  STACK			16  0100 Para	Stack	STACK	   #3
+  _DATA			16  0008 Word	Public	DATA	   #1  #38
+_TEXT			16  0034 Word	Public	CODE	   #1  1  #5  5
+
